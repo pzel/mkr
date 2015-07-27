@@ -68,6 +68,33 @@
   	    (take 3
   		  (funcall (call/fresh (lambda(q) (fives-and-sixes+ q))) (empty-state)))))
 
+(define (nothing q)
+  (fresh () (equalo 'nothing q)))
+
+(define (one-thing q)
+  (fresh (x)
+ 	 (equalo x q)
+ 	 (equalo x 'one)))
+
+(define (trees q)
+  (fresh (a b c)
+ 	 (equalo a 'aspen)
+ 	 (equalo b 'birch)
+ 	 (equalo c 'cypress)))
+
+(deftest nullary-fresh-works
+  (is-equal '((((#(0) . nothing)) . 1))
+	    (take 1 (funcall (call/fresh (lambda(q) (nothing q))) (empty-state)))))
+
+(deftest unary-fresh-works
+  (is-equal '((((#(0) . one) (#(1) . #(0))) . 2))
+ 	    (take 1 (funcall (call/fresh (lambda(q) (one-thing q))) (empty-state)))))
+
+(deftest trinary-fresh-works
+  (is-equal '((((#(3) . cypress) (#(2) . birch) (#(1) . aspen) ) . 4))
+ 	    (take 1 (funcall (call/fresh (lambda(q) (trees q))) (empty-state)))))
+
+
 ;; (deftest conj+-snoozes-cdr
 ;;   (let ((res (funcall (funcall (funcall (funcall (funcall 
 ;; 						  (funcall (call/fresh (lambda(q) (fives-and-sixes+ q))) (empty-state)))))))))
