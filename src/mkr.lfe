@@ -5,13 +5,7 @@
 	  (equalo 2)
 	  (call/fresh 1)))
 
-(defmacro iff (a b c) `(if (== ,a 'false) ,c ,b))
-(defmacro orr 
-  ((cons e es) `(iff ,e 'true (orr ,@es)))
-  (() `'false))
-(defmacro andd
-  ((cons e es) `(iff ,e (andd ,@es) 'false))
-  (() `'true))
+(include-lib "mkr/include/mkr-bool.lfe")
 
 (define (call/fresh f)
   (lambda(s/c)
@@ -33,14 +27,16 @@
 
 (define (unit s/c) (cons s/c (mzero)))
 (define (mzero) '())
+
 (define (bind s/c g)
   (cond ((null? s/c) (mzero))
-	(else 
-	 (mplus (funcall g (car s/c)) 
-		(bind (cdr s/c) g)))))
+	((is_function s/c) (lambda() (bind (funcall s/c) g)))
+	(else (mplus (funcall g (car s/c)) 
+		     (bind (cdr s/c) g)))))
 
 (define (mplus s1 s2)
   (cond ((null? s1) s2)
+	((is_function s1) (lambda() (mplus s2 (funcall s1))))
 	(else (cons (car s1) (mplus (cdr s1) s2)))))
 
 (define (disj g1 g2)
@@ -52,8 +48,8 @@
     (bind (funcall g1 s/c) g2)))
 
 
-(define (unify u v s)
-  (let [(u (walk u s)) (v (walk v s))]
+(define (unify u0 v0 s)
+  (let [(u (walk u0 s)) (v (walk v0 s))]
     (cond
      ((andd (var? u) (var? v) (var=? u v)) s)
      ((var? u) (ext-s u v s))
@@ -75,7 +71,7 @@
    ((pair? l) 
     (let [(a (car l))]
       (iff (pair? a)
-	   (orr (funcall p a) (assp p (cdr l)))
+	   (if (funcall p (car a)) a (assp p (cdr l)))
 	   (assp p (cdr l)))))))
 
 (define (pair? p) 

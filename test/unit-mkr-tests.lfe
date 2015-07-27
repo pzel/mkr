@@ -13,6 +13,7 @@
       (check-wrong-assert-exception 2))))
 
 (include-lib "ltest/include/ltest-macros.lfe")
+(include-lib "mkr/include/mkr-bool.lfe")
 
 (deftest empty-state-is-empty
   (is-equal '(() . 0) (empty-state)))
@@ -29,3 +30,36 @@
 	(is-equal '((((#(1) . 5) (#(0) . 7)) . 2)
 		    (((#(1) . 6) (#(0) . 7)) . 2))
 		  (funcall (a-and-b) (empty-state)))))
+
+(deftest conj-fails-unless-all-goals-succeed
+   (is-equal '()
+	     (funcall (call/fresh 
+		       (lambda(q) (conj (equalo 2 q) (equalo 1 q)))) (empty-state))))
+
+(deftest conj-succeeds-if-all-goals-succeed
+   (is-equal '((((#(0) . 1)). 1))
+	     (funcall (call/fresh 
+		       (lambda(q) (conj (equalo 1 q) (equalo 1 q)))) (empty-state))))
+
+(deftest disj-fails-if-all-goals-fail
+   (is-equal '()
+	     (funcall (call/fresh 
+		       (lambda(q) (disj (equalo 1 1) (equalo 'a 'a)))) (empty-state))))
+
+(deftest disj-succeeds-if-any-goals-succeed
+   (is-equal '((((#(0) . a)). 1))
+	     (funcall (call/fresh 
+		       (lambda(q) (disj (equalo 1 1) (equalo 'a q)))) (empty-state))))
+  
+
+(deftest andd-returns-last-non-falsey-value
+  (is-equal 'a (andd 'true 'b 'a)))
+
+(deftest andd-treats-the-empty-list-as-false
+  (is-equal 'false (andd '() 'b 'a)))
+
+(deftest orr-returns-first-non-falsey-value
+  (is-equal 'a (orr '() '() 'false 'a 'b)))
+
+(deftest orr-returns-false-on-all-falsey-values
+  (is-equal 'false (orr '() '() 'false)))
