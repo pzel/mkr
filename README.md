@@ -1,9 +1,6 @@
 # mkr
 
-
-## Introduction
-
-Add content to me here!
+An implementation of µKanren in LFE.
 
 
 ## Installation
@@ -14,7 +11,7 @@ Just add it to your ``rebar.config`` deps:
   {deps, [
     ...
     {mkr, ".*",
-      {git, "git@github.com:YOURNAME/mkr.git", "master"}}
+      {git, "git@github.com:pzel/mkr.git", "master"}}
       ]}.
 ```
 
@@ -28,4 +25,4 @@ And then do the usual:
 
 ## Usage
 
-Add content to me here!
+The usage is great.
