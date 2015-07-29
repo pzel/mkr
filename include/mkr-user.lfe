@@ -22,3 +22,10 @@
                (: mkr-user take ,n
                   (: mkr-user call/empty-state 
                      (fresh ,@goals))))))
+
+(defmacro run*
+  (goals
+   `(: mkr-user mK-reify
+               (: mkr-user take-all
+                  (: mkr-user call/empty-state 
+                     (fresh ,@goals))))))

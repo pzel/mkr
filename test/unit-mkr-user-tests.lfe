@@ -97,3 +97,19 @@
 (deftest run-one-works
   (is-equal '(one)
             (run 1 (q) (equalo q 'one))))
+
+(deftest run*-works
+  (is-equal '(one two)
+            (run* (q) (disj+
+                       (equalo q 'one)
+                       (equalo q 'two)
+                       ))))
+
+(deftest run-with-multiple-args
+  (is-equal '(eh bee _.0 _.0)
+            (run* (q a b)
+                  (disj+
+                   (conj+ (equalo a 'eh) (equalo q a))
+                   (conj+ (equalo b 'bee) (equalo q b))
+                   (conj+ (equalo b a) (equalo q a))
+                   (conj+ (equalo q a))))))
