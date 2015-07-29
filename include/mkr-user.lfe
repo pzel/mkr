@@ -16,6 +16,16 @@
        `(: mkr call/fresh (lambda (,(car (car e))) 
 			    (fresh ,(cdr (car e)) ,@(cdr e))))))))
 
+(defmacro conde
+  (goals
+   (let ((conjd-goals 
+          (: lists map 
+             (lambda(conde-line) 
+               (if (== 'else (car conde-line))
+                   `(conj+ ,@(cdr conde-line))
+                   `(conj+ ,@conde-line))) goals)))
+     `(disj+ ,@conjd-goals))))
+
 (defmacro run
   ((cons n goals)
    `(: mkr-user mK-reify

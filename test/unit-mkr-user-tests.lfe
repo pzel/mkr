@@ -67,6 +67,30 @@
   	    (take 3
   		  (funcall (call/fresh (lambda(q) (fives-and-sixes+ q))) (empty-state)))))
 
+(define (oneo n)
+  (equalo 1 n))
+
+(deftest conde-works
+  (is-equal 
+   '(1 other)
+   (run* (q)
+         (conde
+          ((oneo q) (equalo 1 q))
+          ((equalo 2 q) (equalo 'two q)) ;; will fail 
+          ((equalo 'other q))))))
+
+(deftest conde-supports-else-clause
+  (is-equal 
+   '(else-worked)
+   (run* (q)
+         (conde
+          ((oneo q) 
+           (equalo 'one q)) 
+          ((equalo 2 q)
+           (equalo 'two q))
+          (else 
+           (equalo 'else-worked q))))))
+
 (define (nothing q)
   (fresh () (equalo 'nothing q)))
 
