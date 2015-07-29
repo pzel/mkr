@@ -15,3 +15,10 @@
       (else
        `(: mkr call/fresh (lambda (,(car (car e))) 
 			    (fresh ,(cdr (car e)) ,@(cdr e))))))))
+
+(defmacro run
+  ((cons n goals)
+   `(: mkr-user mK-reify
+               (: mkr-user take ,n
+                  (: mkr-user call/empty-state 
+                     (fresh ,@goals))))))

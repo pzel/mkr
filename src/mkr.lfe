@@ -3,7 +3,14 @@
 	  (disj 2)
 	  (empty-state 0)
 	  (equalo 2)
-	  (call/fresh 1)))
+	  (call/fresh 1))
+
+  (export  ;; for mkr-user
+   (empty-state 0)
+   (walk 2)
+   (var 1)
+   (var? 1)
+   (pair? 1)))
 
 (include-lib "mkr/include/mkr-bool.lfe")
 

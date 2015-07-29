@@ -3,17 +3,17 @@
   (export all)
   (import
    (from mkr
-	 (empty-state 0)
-	 (call/fresh 1)
-	 (conj 2)
-	 (disj 2)
-	 (equalo 2))
+         (empty-state 0)
+         (call/fresh 1)
+         (conj 2)
+         (disj 2)
+         (equalo 2))
    (from mkr-user
-	 (take-all 1)
-	 (take 2))
+         (take-all 1)
+         (take 2))
    (from ltest
-	 (check-failed-assert 2)
-	 (check-wrong-assert-exception 2))))
+         (check-failed-assert 2)
+         (check-wrong-assert-exception 2))))
 
 (include-lib "ltest/include/ltest-macros.lfe")
 (include-lib "mkr/include/mkr-user.lfe")
@@ -47,7 +47,6 @@
 	      (((#(0) . 3)) . 1))
 	    (take-all
 		  (funcall (call/fresh (lambda(q) (one-two-three q))) (empty-state)))))
-
 
 (define (fives+ x) (disj+ (equalo 5 x) (fives+ x)))
 (define (sixes+ x) (disj+ (equalo 6 x) (sixes+ x)))
@@ -95,8 +94,6 @@
  	    (take 1 (funcall (call/fresh (lambda(q) (trees q))) (empty-state)))))
 
 
-;; (deftest conj+-snoozes-cdr
-;;   (let ((res (funcall (funcall (funcall (funcall (funcall 
-;; 						  (funcall (call/fresh (lambda(q) (fives-and-sixes+ q))) (empty-state)))))))))
-;;     (is-equal '(((#(0) . 5)). 1) (car res))
-;;     (is (is_function (cdr res)))))
+(deftest run-one-works
+  (is-equal '(one)
+            (run 1 (q) (equalo q 'one))))
