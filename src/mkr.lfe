@@ -1,12 +1,10 @@
 (defmodule mkr
   (export (conj 2)
 	  (disj 2)
-	  (empty-state 0)
 	  (equalo 2)
 	  (call/fresh 1))
 
   (export  ;; for mkr-user
-   (empty-state 0)
    (walk 2)
    (var 1)
    (var? 1)
@@ -24,7 +22,6 @@
     (let [(s (unify u v (car s/c)))]
       (iff s (unit `(,s . ,(cdr s/c))) (mzero)))))
 
-(define (empty-state) '(() . 0))
 (define (ext-s x v s) `((,x . ,v) . ,s))
 
 (define (var c) (tuple c))

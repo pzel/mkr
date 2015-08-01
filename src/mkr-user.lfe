@@ -1,6 +1,7 @@
 (defmodule mkr-user
   (export 
    (call/empty-state 1)
+   (empty-state 0)
    (mK-reify 1)
    (take 2)
    (take-all 1)
@@ -9,8 +10,10 @@
 (include-lib "mkr/include/mkr-bool.lfe")
 (include-lib "mkr/include/mkr-user.lfe")
 
+(define (empty-state) '(() . 0))
+
 (define (call/empty-state g)
-  (funcall g (: mkr empty-state)))
+  (funcall g (empty-state)))
 
 (define (mK-reify s/c)
   (: lists map (lambda(s) (reify-state/1st-var s)) s/c))

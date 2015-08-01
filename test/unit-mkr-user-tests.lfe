@@ -3,12 +3,12 @@
   (export all)
   (import
    (from mkr
-         (empty-state 0)
          (call/fresh 1)
          (conj 2)
          (disj 2)
          (equalo 2))
    (from mkr-user
+         (empty-state 0)
          (take-all 1)
          (take 2))
    (from ltest

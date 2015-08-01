@@ -3,7 +3,6 @@
   (export all)
   (import
     (from mkr
-	  (empty-state 0)
 	  (call/fresh 1)
 	  (conj 2)
 	  (disj 2)
@@ -15,8 +14,7 @@
 (include-lib "ltest/include/ltest-macros.lfe")
 (include-lib "mkr/include/mkr-bool.lfe")
 
-(deftest empty-state-is-empty
-  (is-equal '(() . 0) (empty-state)))
+(define (empty-state) (: mkr-user empty-state)) ;; DRY
 
 (deftest call/fresh-simple-goal
   (is-equal '((((#(0) . 5)). 1))
