@@ -20,7 +20,8 @@
 
 (define (fives x) (disj (equalo 5 x) (zzz (fives x))))
 (deftest call/fresh-recursive-goal
-  (let [(res (funcall (call/fresh (lambda(q) (fives q))) (empty-state)))]
+  (let [(res (funcall (call/fresh (lambda(q) (fives q))) 
+		      (empty-state)))]
     (is-equal '(((#(0) . 5)). 1) (car res))
     (is (is_function (cdr res)))))
 
@@ -34,19 +35,24 @@
 	      (((#(0) . 2)) . 1)
 	      (((#(0) . 3)) . 1))
 	    (take 3
-		  (funcall (call/fresh (lambda(q) (one-two-three q))) (empty-state)))))
+		  (funcall (call/fresh (lambda(q) (one-two-three q)))
+			   (empty-state)))))
 
 (deftest take-n-with-shorter-stream
    (is-equal '((((#(0) . 1)) . 1))
  	    (take 3
- 		  (funcall (call/fresh (lambda(q) (conj (one-two-three q) (equalo 1 q)))) (empty-state)))))
+ 		  (funcall (call/fresh 
+			    (lambda(q) (conj (one-two-three q) 
+					     (equalo 1 q)))) 
+			   (empty-state)))))
 
 (deftest take-all
   (is-equal '((((#(0) . 1)) . 1)
 	      (((#(0) . 2)) . 1)
 	      (((#(0) . 3)) . 1))
 	    (take-all
-		  (funcall (call/fresh (lambda(q) (one-two-three q))) (empty-state)))))
+		  (funcall (call/fresh (lambda(q) (one-two-three q)))
+			   (empty-state)))))
 
 (define (fives+ x) (disj+ (equalo 5 x) (fives+ x)))
 (define (sixes+ x) (disj+ (equalo 6 x) (sixes+ x)))
@@ -56,7 +62,8 @@
 
 (deftest disj+-snoozes-cdr
   (let ((res (funcall (funcall 
-		       (funcall (call/fresh (lambda(q) (fives+ q))) (empty-state))))))
+		       (funcall (call/fresh (lambda(q) (fives+ q))) 
+				(empty-state))))))
     (is-equal '(((#(0) . 5)). 1) (car res))
     (is (is_function (cdr res)))))
 
@@ -64,8 +71,10 @@
     (is-equal '((((#(0) . 6)) . 1)
 		(((#(0) . 6)) . 1)
 		(((#(0) . 5)) . 1))
-  	    (take 3
-  		  (funcall (call/fresh (lambda(q) (fives-and-sixes+ q))) (empty-state)))))
+	      (take 3
+		    (funcall (call/fresh 
+			      (lambda(q) (fives-and-sixes+ q))) 
+			     (empty-state)))))
 
 (define (oneo n)
   (equalo 1 n))
@@ -107,15 +116,18 @@
 
 (deftest nullary-fresh-works
   (is-equal '((((#(0) . nothing)) . 1))
-	    (take 1 (funcall (call/fresh (lambda(q) (nothing q))) (empty-state)))))
+	    (take 1 (funcall (call/fresh (lambda(q) (nothing q))) 
+			     (empty-state)))))
 
 (deftest unary-fresh-works
   (is-equal '((((#(0) . one) (#(1) . #(0))) . 2))
- 	    (take 1 (funcall (call/fresh (lambda(q) (one-thing q))) (empty-state)))))
+ 	    (take 1 (funcall (call/fresh (lambda(q) (one-thing q))) 
+			     (empty-state)))))
 
 (deftest trinary-fresh-works
   (is-equal '((((#(3) . cypress) (#(2) . birch) (#(1) . aspen) ) . 4))
- 	    (take 1 (funcall (call/fresh (lambda(q) (trees q))) (empty-state)))))
+ 	    (take 1 (funcall (call/fresh (lambda(q) (trees q))) 
+			     (empty-state)))))
 
 
 (deftest run-one-works

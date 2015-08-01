@@ -20,7 +20,8 @@
 
 (deftest call/fresh-simple-goal
   (is-equal '((((#(0) . 5)). 1))
-	    (funcall (call/fresh (lambda(q) (equalo q 5))) (empty-state))))
+	    (funcall (call/fresh (lambda(q) (equalo q 5))) 
+		     (empty-state))))
 
 (deftest call/fresh-complex-goal
   (flet ((a-and-b ()
@@ -34,24 +35,27 @@
 (deftest conj-fails-unless-all-goals-succeed
    (is-equal '()
 	     (funcall (call/fresh 
-		       (lambda(q) (conj (equalo 2 q) (equalo 1 q)))) (empty-state))))
+		       (lambda(q) (conj (equalo 2 q) (equalo 1 q)))) 
+		      (empty-state))))
 
 (deftest conj-succeeds-if-all-goals-succeed
    (is-equal '((((#(0) . 1)). 1))
 	     (funcall (call/fresh 
-		       (lambda(q) (conj (equalo 1 q) (equalo 1 q)))) (empty-state))))
+		       (lambda(q) (conj (equalo 1 q) (equalo 1 q)))) 
+		      (empty-state))))
 
 (deftest disj-fails-if-all-goals-fail
    (is-equal '()
 	     (funcall (call/fresh 
-		       (lambda(q) (disj (equalo 1 1) (equalo 'a 'a)))) (empty-state))))
+		       (lambda(q) (disj (equalo 1 1) (equalo 'a 'a)))) 
+		      (empty-state))))
 
 (deftest disj-succeeds-if-any-goals-succeed
    (is-equal '((((#(0) . a)). 1))
 	     (funcall (call/fresh 
-		       (lambda(q) (disj (equalo 1 1) (equalo 'a q)))) (empty-state))))
+		       (lambda(q) (disj (equalo 1 1) (equalo 'a q)))) 
+		      (empty-state))))
   
-
 (deftest andd-returns-last-non-falsey-value
   (is-equal 'a (andd 'true 'b 'a)))
 
