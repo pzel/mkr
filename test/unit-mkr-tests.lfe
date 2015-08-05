@@ -45,11 +45,13 @@
 (deftest disj-fails-if-all-goals-fail
   (is-equal '()
             (funcall (call/fresh 
-                      (lambda(q) (disj (= 1 1) (= 'a 'a)))) 
+                      (lambda(q) (disj (= 1 2) (= 'a 'b)))) 
                      (empty-state))))
 
 (deftest disj-succeeds-if-any-goals-succeed
-  (is-equal '((((#(0) . a)). 1))
+  (is-equal '( (() . 1)
+               (((#(0) . a)). 1)
+              )
             (funcall (call/fresh 
                       (lambda(q) (disj (= 1 1) (= 'a q)))) 
                      (empty-state))))
@@ -57,11 +59,12 @@
 (deftest andd-returns-last-non-falsey-value
   (is-equal 'a (andd 'true 'b 'a)))
 
-(deftest andd-treats-the-empty-list-as-false
-  (is-equal 'false (andd '() 'b 'a)))
+(deftest andd-treats-the-empty-list-as-TRUE
+  (is-equal 'c (andd '() 'b 'c)))
 
-(deftest orr-returns-first-non-falsey-value
-  (is-equal 'a (orr '() '() 'false 'a 'b)))
+(deftest orr-returns-first-non-false-value
+  (is-equal '() (orr 'false 'false '() '() 'a 'b)))
 
 (deftest orr-returns-false-on-all-falsey-values
-  (is-equal 'false (orr '() '() 'false)))
+  (is-equal 'false (orr 'false)))
+
