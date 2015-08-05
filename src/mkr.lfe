@@ -1,7 +1,7 @@
 (defmodule mkr
   (export (conj 2)
 	  (disj 2)
-	  (equalo 2)
+	  (= 2)
 	  (call/fresh 1))
 
   (export  ;; for mkr-user
@@ -17,7 +17,7 @@
     (let [(c (cdr s/c))]
       (funcall (funcall f (var c)) `(,(car s/c) . ,(+ 1 c))))))
 
-(define (equalo u v)
+(define (= u v)
   (lambda(s/c)
     (let [(s (unify u v (car s/c)))]
       (iff s (unit `(,s . ,(cdr s/c))) (mzero)))))
