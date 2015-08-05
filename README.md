@@ -11,7 +11,7 @@ Programming](http://webyrd.net/scheme-2013/papers/HemannMuKanren2013.pdf) by
 Jason Hemann and Daniel P. Friedman.
 
 
-### Can I do the exercises from *The Reasoned Schemer* in `mkr`?
+### Can I run the exercises from *The Reasoned Schemer* in `mkr`?
 
 Yes! You may have to watch out, as `conde` actually interleaves streams,
 like `condi` from *The Reasoned Schemer*. TODO: name things properly.
