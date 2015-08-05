@@ -5,9 +5,10 @@
    (from mkr
          (call/fresh 1)
          (conj 2)
-         (disj 2)
-         (= 2))
+         (disj 2))
    (from mkr-user
+         (succeed 0)
+         (fail 0)
          (empty-state 0)
          (take-all 1)
          (take 2))
@@ -29,6 +30,15 @@
   (disj (= q 1)
         (disj (= q 2)
               (= q 3))))
+
+(deftest succeed-succeeds
+  (is-equal '(true)
+            (run* (q) (succeed) (= 'true q))))
+
+(deftest fail-fails
+  (is-equal '()
+            (run* (q) (fail) (= 'true q))))
+  
 
 (deftest take-n
   (is-equal '((((#(0) . 1)) . 1)
@@ -149,3 +159,10 @@
                    (conj+ (= b 'bee) (= q b))
                    (conj+ (= b a) (= q a))
                    (conj+ (= q a))))))
+
+(define (nullo l) (= l '()))
+
+(deftest nullo-associates-var-with-empty-list
+  (is-equal '(())
+            (run* (q) (nullo q))))
+

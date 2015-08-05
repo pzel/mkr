@@ -8,7 +8,10 @@
    (walk 2)
    (var 1)
    (var? 1)
-   (pair? 1)))
+   (pair? 1)
+   (mzero 0)
+   (unit 1)
+   ))
 
 (include-lib "mkr/include/mkr-bool.lfe")
 
@@ -51,7 +54,6 @@
   (lambda(s/c)
     (bind (funcall g1 s/c) g2)))
 
-
 (define (unify u0 v0 s)
   (let [(u (walk u0 s)) (v (walk v0 s))]
     (cond
@@ -60,7 +62,7 @@
      ((var? v) (ext-s v u s))
      ((andd (pair? u) (pair? v))
       (let [(s (unify (car u) (car v) s))]
-	(andd s (unify (cdr u) (cdr v) s))))
+        (andd s (unify (cdr u) (cdr v) s))))
      (else (andd (=:= u v) s)))))
 
 (define (walk u s)
@@ -82,4 +84,6 @@
   (cond
    ((?= (cons a d) p) 'true)
    (else 'false)))
-(define (null? x) (== '() x))
+
+(define (null? x) 
+  (=:= '() x))

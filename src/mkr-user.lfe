@@ -3,6 +3,8 @@
    (call/empty-state 1)
    (empty-state 0)
    (mK-reify 1)
+   (fail 0)
+   (succeed 0)
    (take 2)
    (take-all 1)
    ))
@@ -46,6 +48,13 @@
 
 (define (pull st)
   (iff (is_function st) (pull (funcall st)) st))
+
+(define (succeed)
+  (lambda (s/c) (: mkr unit s/c)))
+
+(define (fail)
+  (lambda (_) (: mkr mzero)))
+
 
 (define (take n st)
   (iff (== 0 n) '()

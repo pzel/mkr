@@ -1,4 +1,5 @@
-(defmacro zzz (g) `(lambda(s/c) (lambda() (funcall ,g s/c))))
+(defmacro zzz (g) 
+  `(lambda(s/c) (lambda() (funcall ,g s/c))))
 
 (defmacro disj+
   ((cons g '()) `(zzz ,g))
@@ -39,3 +40,6 @@
                (: mkr-user take-all
                   (: mkr-user call/empty-state 
                      (fresh ,@goals))))))
+
+(defmacro = (a b) 
+  `(: mkr = ,a ,b))
